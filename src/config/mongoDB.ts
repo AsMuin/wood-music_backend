@@ -7,7 +7,7 @@ async function connectToMongoDB() {
         });
         await mongoose.connect(`${process.env.MONGODB_URI}/wood-music`);
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 export default connectToMongoDB;

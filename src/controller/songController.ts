@@ -44,4 +44,21 @@ const geiSongList: controllerAction = async (req, res) => {
     }
 };
 
-export {addSong, geiSongList};
+const deleteSong: controllerAction = async (req, res) => {
+    try {
+        const {id} = req.body;
+        const getResponse = apiResponse(res);
+        const song = await Song.findById(id);
+        if (!song) {
+            return getResponse(false, '音乐不存在');
+        } else {
+            await song.deleteOne();
+            return getResponse(true, '删除成功');
+        }
+    } catch (error: any) {
+        console.error(error);
+        apiResponse(res)(false, error.message);
+    }
+};
+
+export {addSong, geiSongList, deleteSong};

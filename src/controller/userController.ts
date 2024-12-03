@@ -59,7 +59,10 @@ const userRegister: controllerAction = async (req, res) => {
                 }
             }
         }
-    } catch (e: any) {}
+    } catch (e: any) {
+        console.error(e);
+        apiResponse(res)(false, e.message);
+    }
 };
 
 export {userLogin, userRegister};

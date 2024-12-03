@@ -3,6 +3,7 @@ import 'dotenv/config';
 import connectToMongoDB from './src/config/mongoDB';
 import songRouter from './src/route/songRoute';
 import userRouter from '@/route/userRoute';
+import albumRouter from '@/route/albumRoute';
 
 //服务配置
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({extended: true}));
 //路由
 app.use('/api/song', songRouter);
 app.use('/api/user', userRouter);
+app.use('/api/album', albumRouter);
 
 app.listen(port, () => {
     console.log(`Server running on  http://localhost:${port} 🎉🎉🎉🎉`);

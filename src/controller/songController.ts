@@ -32,6 +32,14 @@ const addSong: controllerAction = async (req, res) => {
     }
 };
 
-const geiSongList: controllerAction = async (req, res) => {};
+const geiSongList: controllerAction = async (req, res) => {
+    try{
+        const songList = await Song.find();
+        return apiResponse(res)(true,'获取音乐列表成功',{data:songList})
+    }catch(err:any){
+        console.error(err)
+        return apiResponse(res)(false, err.message)
+    }
+};
 
 export {addSong, geiSongList};

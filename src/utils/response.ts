@@ -19,5 +19,6 @@ const apiResponse =
             })
         };
         response.json(responseBody);
+        return responseBody;
     };
 export default apiResponse;

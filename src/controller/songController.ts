@@ -3,6 +3,7 @@ import apiResponse from '../utils/response';
 import CF_upload from '../config/cloudFlare';
 import getAudioDuration from '../utils/audioDuration';
 import Song, {ISong} from '../model/songModel';
+import pageQuery from '../utils/pageQuery';
 
 const addSong: controllerAction = async (req, res) => {
     try {
@@ -34,8 +35,9 @@ const addSong: controllerAction = async (req, res) => {
 
 const geiSongList: controllerAction = async (req, res) => {
     try{
-        const songList = await Song.find();
-        return apiResponse(res)(true,'获取音乐列表成功',{data:songList})
+        const { pageIndex = 0,pageSize =20} = req.body;
+        const songPageQuery = await pageQuery(Song)(pageIndex,pageSize)
+        return apiResponse(res)(true,'获取音乐列表成功',{data:songPageQuery})
     }catch(err:any){
         console.error(err)
         return apiResponse(res)(false, err.message)

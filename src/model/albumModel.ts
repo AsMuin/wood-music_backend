@@ -11,5 +11,7 @@ const albumSchema = new mongoose.Schema({
     bgColor: {type: String, required: true},
     image: {type: String, required: true}
 });
+
 const Album = mongoose.model<IAlbum>('Album', albumSchema);
+
 export default Album;

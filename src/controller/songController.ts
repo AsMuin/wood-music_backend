@@ -29,7 +29,7 @@ const addSong: controllerAction = async (req, res) => {
         }
     } catch (err: any) {
         console.error(err);
-        return apiResponse(res)(false, err.message);
+        apiResponse(res)(false, err.message);
     }
 };
 
@@ -40,7 +40,7 @@ const geiSongList: controllerAction = async (req, res) => {
         return apiResponse(res)(true, '获取音乐列表成功', {data: songPageQuery});
     } catch (err: any) {
         console.error(err);
-        return apiResponse(res)(false, err.message);
+        apiResponse(res)(false, err.message);
     }
 };
 

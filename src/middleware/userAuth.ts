@@ -14,7 +14,6 @@ function userAuth(req: Request, res: Response, next: NextFunction) {
     } catch (e: any) {
         console.error(e);
         apiResponse(res)(false, e.message);
-        return;
     }
 }
 export default userAuth;

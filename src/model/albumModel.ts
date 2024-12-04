@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-interface IAlbum {
+export interface IAlbum {
     name: string;
     desc: string;
     bgColor: string;

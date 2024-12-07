@@ -1,3 +1,4 @@
+import CF_upload from '@/config/cloudFlare';
 import User from '@/model/userModel';
 import apiResponse from '@/utils/response';
 import bcrypt from 'bcrypt';
@@ -31,6 +32,7 @@ const userLogin: controllerAction = async (req, res) => {
         apiResponse(res)(false, error.message);
     }
 };
+
 const userRegister: controllerAction = async (req, res) => {
     try {
         const {name, email, password} = req.body;
@@ -65,4 +67,59 @@ const userRegister: controllerAction = async (req, res) => {
     }
 };
 
-export {userLogin, userRegister};
+const userUpdateAvatar: controllerAction = async (req, res) => {
+    try {
+        const {userId} = req.body;
+        const avatarImage = req.file;
+        const getResponse = apiResponse(res);
+        if (!avatarImage) {
+            return getResponse(false, '请上传头像');
+        } else {
+            const user = await User.findById(userId);
+            if (!user) {
+                return getResponse(false, '用户不存在');
+            } else {
+                const avatarUrl = await CF_upload(avatarImage.buffer, avatarImage.originalname);
+                if (!avatarUrl) {
+                    return getResponse(false, '上传头像失败');
+                } else {
+                    user.avatar = avatarUrl;
+                    await user.save();
+                    return getResponse(true, '头像上传成功', {
+                        data: {
+                            avatar: user.avatar,
+                            name: user.name,
+                            email: user.email
+                        }
+                    });
+                }
+            }
+        }
+    } catch (error: any) {
+        console.error(error);
+        apiResponse(res)(false, error.message);
+    }
+};
+
+const userInfo: controllerAction = async (req, res) => {
+    try {
+        const {userId} = req.body;
+        const getResponse = apiResponse(res);
+        const user = await User.findById(userId);
+        if (!user) {
+            return getResponse(false, '用户不存在');
+        } else {
+            return getResponse(true, '获取用户信息成功', {
+                data: {
+                    name: user.name,
+                    email: user.email,
+                    avatar: user.avatar ?? ''
+                }
+            });
+        }
+    } catch (error: any) {
+        console.error(error);
+        apiResponse(res)(false, error.message);
+    }
+};
+export {userLogin, userRegister, userUpdateAvatar, userInfo};

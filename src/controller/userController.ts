@@ -122,4 +122,41 @@ const userInfo: controllerAction = async (req, res) => {
         apiResponse(res)(false, error.message);
     }
 };
-export {userLogin, userRegister, userUpdateAvatar, userInfo};
+
+const updateUserInfo: controllerAction = async (req, res) => {
+    try {
+        const {userId, name, email, originalPassword, password, confirmPassword} = req.body;
+        const getResponse = apiResponse(res);
+        const user = await User.findById(userId);
+        //用户是否存在
+        if (!user) {
+            return getResponse(false, '用户不存在');
+        }
+        //密码是否正确
+        if (password && confirmPassword && originalPassword) {
+            if (password !== confirmPassword) {
+                return getResponse(false, '两次密码输入不一致');
+            }
+            const isMatch = await bcrypt.compare(originalPassword, user.password);
+            if (!isMatch) {
+                return getResponse(false, '原密码错误');
+            }
+        }
+        //更新用户信息
+        user.name = name;
+        user.email = email;
+        user.password = await bcrypt.hash(password, await bcrypt.genSalt(10));
+        await user.save();
+        return getResponse(true, '更新用户信息成功', {
+            data: {
+                name: user.name,
+                email: user.email,
+                avatar: user.avatar ?? ''
+            }
+        });
+    } catch (error: any) {
+        console.error(error);
+        apiResponse(res)(false, error.message);
+    }
+};
+export {userLogin, userRegister, userUpdateAvatar, userInfo, updateUserInfo};

@@ -8,7 +8,7 @@ const getAlbumList: controllerAction = async (req, res) => {
     try {
         const {pageIndex = 0, pageSize = 20} = req.body;
         const getResponse = apiResponse(res);
-        const albumQuery = pageQuery(Album)(pageIndex, pageSize);
+        const albumQuery = await pageQuery(Album)(pageIndex, pageSize);
         return getResponse(true, '专辑列表获取成功', {data: albumQuery});
     } catch (error: any) {
         apiResponse(res)(false, error.message);

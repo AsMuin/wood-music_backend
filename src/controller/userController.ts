@@ -17,6 +17,10 @@ const userLogin: controllerAction = async (req, res) => {
             if (!user) {
                 return getResponse(false, '用户不存在');
             } else {
+                const isMatch = await bcrypt.compare(password, user.password);
+                if (!isMatch) {
+                    return getResponse(false, '密码错误');
+                }
                 const token = createToken(user._id.toString());
                 return getResponse(true, '登录成功', {
                     token,

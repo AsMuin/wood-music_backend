@@ -7,8 +7,10 @@ interface IPageQueryResult<T> {
 }
 const pageQuery =
     <T = any>(Model: mongoose.Model<T>) =>
-    async (pageIndex: number, pageSize: number) => {
+    async (pageIndex: number | string, pageSize: number | string) => {
         try {
+            pageIndex = typeof pageIndex === 'string' ? parseInt(pageIndex) : pageIndex;
+            pageSize = typeof pageSize === 'string' ? parseInt(pageSize) : pageSize;
             const itemListPromise = Model.find()
                 .skip(pageIndex * pageSize)
                 .limit(pageSize)

@@ -35,8 +35,8 @@ const addSong: controllerAction = async (req, res) => {
 
 const geiSongList: controllerAction = async (req, res) => {
     try {
-        const {pageIndex = 0, pageSize = 20} = req.body;
-        const songPageQuery = await pageQuery(Song)(pageIndex, pageSize);
+        const {pageIndex = 0, pageSize = 20} = req.query;
+        const songPageQuery = await pageQuery(Song)(pageIndex as string | number, pageSize as string | number);
         return apiResponse(res)(true, '获取音乐列表成功', {data: songPageQuery});
     } catch (err: any) {
         console.error(err);

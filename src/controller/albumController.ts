@@ -6,9 +6,9 @@ import CF_upload from '@/config/cloudFlare';
 
 const getAlbumList: controllerAction = async (req, res) => {
     try {
-        const {pageIndex = 0, pageSize = 20} = req.body;
+        const {pageIndex = 0, pageSize = 20} = req.query;
         const getResponse = apiResponse(res);
-        const albumQuery = await pageQuery(Album)(pageIndex, pageSize);
+        const albumQuery = await pageQuery(Album)(pageIndex as string | number, pageSize as string | number);
         return getResponse(true, '专辑列表获取成功', {data: albumQuery});
     } catch (error: any) {
         apiResponse(res)(false, error.message);

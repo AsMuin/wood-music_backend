@@ -12,6 +12,6 @@ const albumSchema = new mongoose.Schema({
     image: {type: String, required: true}
 });
 
-const Album = mongoose.model<IAlbum>('Album', albumSchema);
+const Album = mongoose.models.Album || mongoose.model<IAlbum>('Album', albumSchema);
 
 export default Album;

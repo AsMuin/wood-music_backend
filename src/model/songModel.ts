@@ -35,6 +35,6 @@ const songSchema = new mongoose.Schema<ISong>({
     }
 });
 
-const Song = mongoose.model<ISong>('Song', songSchema);
+const Song = mongoose.models.Song || mongoose.model<ISong>('Song', songSchema);
 
 export default Song;
